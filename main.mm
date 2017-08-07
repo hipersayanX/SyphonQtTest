@@ -1,11 +1,29 @@
 #include <QCoreApplication>
+#include <QTimer>
 #import <Syphon.h>
 
 #include "serverobserver.h"
 
+void runLoop()
+{
+    [[NSRunLoop currentRunLoop]
+     runMode: NSDefaultRunLoopMode
+     runBeforeDate: [NSDate dateWithTimeIntervalSinceNow: 1]];
+
+    // or
+
+//     [[NSRunLoop currentRunLoop]
+//      runUntilDate: [NSDate dateWithTimeIntervalSinceNow: 1]];
+}
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
+
+    QTimer timer;
+    timer.setInterval(1);
+    QObject::connect(&timer, &QTimer::timeout, runLoop);
+    timer.start();
 
     id serverObserver = [[ServerObserver alloc] init];
 
